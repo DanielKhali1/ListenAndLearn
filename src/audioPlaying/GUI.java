@@ -142,7 +142,7 @@ public class GUI extends Application
 			    @Override
 			    public void run() {
 						try {
-							String command = "python C:\\Users\\Danny\\Documents\\GitHub\\ListenAndLearn\\playoutput.py";
+							String command = "python3 audioRecorder.py";
 							
 							try {
 								Runtime.getRuntime().exec(command);
@@ -166,7 +166,7 @@ public class GUI extends Application
 			            @Override
 			            public void run()
 			            {
-			            	System.out.println("Started Recording");
+			            	System.out.println("playing Audio");
 			            }
 			        });
 			    }

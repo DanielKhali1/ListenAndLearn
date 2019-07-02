@@ -4,9 +4,6 @@ from base64 import b64encode
 from pydub import AudioSegment
 from os.path import splitext
 
-import audiotools
-
-
 fs = 44100  # Sample rate
 seconds = 0  # Duration of recording
 
@@ -31,12 +28,12 @@ write('output.wav', fs, myrecording)  # Save as WAV file
 
 
 
-wavFile = open("output.wav", "rb")
+#wavFile = open("output.wav", "rb")
 
-flac_path = splitext("output.wav")[0] + ".flac"
-audio = AudioSegment.from_wav("output.wav")
-audio.export(flac_path , format = 'flac')
+#flac_path = splitext("output.wav")[0] + ".flac"
+#audio = AudioSegment.from_wav("output.wav")
+#audio.export(flac_path , format = 'flac')
 
 
-encodedText = b64encode(wavFile.read())
-b64bFile.write(encodedText)
+#encodedText = b64encode(wavFile.read())
+#b64bFile.write(encodedText)
