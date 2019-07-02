@@ -33,8 +33,9 @@ public class GUI extends Application
 	private final ExecutorService exec = Executors.newCachedThreadPool();
 	public static void main(String[] args){launch(args);}
 	
-	Text updater = new Text("idle");
-
+	
+	public int requestCounter;
+		
 
 	@Override
 	public void start(Stage primaryStage)
@@ -42,26 +43,6 @@ public class GUI extends Application
 
 		
 		Pane pane = new Pane();
-		
-		updater.setLayoutX(50);
-		updater.setLayoutY(200);
-		pane.getChildren().add(updater);
-		
-		
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), e->
-		{
-			try
-			{
-				BufferedReader br = new BufferedReader(new FileReader(new File("updater.txt")));
-				String content = br.readLine();
-				updater.setText(content);
-			}
-			catch(Exception a)
-			{
-				System.out.println("something went wrong");
-			}
-		}));
-		timeline.play();
 		
 		
 		
@@ -109,6 +90,15 @@ public class GUI extends Application
 		RecBtn.setFitHeight(75);
 		RecBtn.setSmooth(true);
 		pane.getChildren().add(RecBtn);
+		
+		RecBtn.setOnMouseEntered( e->{
+			RecBtn.setFitWidth(85);
+			RecBtn.setFitHeight(85);
+		});
+		RecBtn.setOnMouseExited( e->{
+			RecBtn.setFitWidth(75);
+			RecBtn.setFitHeight(75);
+		});
 		
 		
 		Button setButton = new Button("Set");
