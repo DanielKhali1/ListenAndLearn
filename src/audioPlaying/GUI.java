@@ -26,6 +26,8 @@ import javafx.scene.media.AudioClip;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 
+import javax.sound.sampled.AudioFormat;
+
 public class GUI extends Application
 {
 	TextField tfseconds = new TextField("3");
