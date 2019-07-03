@@ -4,5 +4,5 @@
 python version 2.7.13
 
 ## Dependencies ##
-+ PyAudio
++ PyAudio (download wheel manually)
 + SpeechRecognition
