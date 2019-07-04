@@ -15,15 +15,19 @@ public class GUI extends Application
 	public int requestCounter;
 
 	ScrollPane scrollpane = new ScrollPane();
+	ScrollPane commandScroll = new ScrollPane();
+
 	
 	@Override
 	public void start(Stage primaryStage)
 	{
-		
 		primaryStage.setOnShown(e ->
 		scrollpane.lookup(".viewport").setStyle("-fx-background-color: 'transparent';"));
 
-		Pane masterPane = new MasterPane(scrollpane);
+		primaryStage.setOnShown(e ->
+		commandScroll.lookup(".viewport").setStyle("-fx-background-color: 'transparent';"));
+		
+		Pane masterPane = new MasterPane(scrollpane, commandScroll);
 		Scene scene = new Scene(masterPane, 720, 720);
 		primaryStage.setTitle("WIIB Module Engine");
 		primaryStage.getIcons().add(new Image(GUI.class.getResourceAsStream("/imgs/wiibIcon.png")));

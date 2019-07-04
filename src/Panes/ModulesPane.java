@@ -6,8 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
+import Things.Command;
 import Things.Module;
 
 public class ModulesPane extends Pane
@@ -15,13 +17,14 @@ public class ModulesPane extends Pane
 	VBox scrollBoi = new VBox();
 	ScrollPane scrollpane;
 
-	LinkedList<Module> modules = new LinkedList<Module>();
+	private LinkedList<Module> modules = new LinkedList<Module>();
 	
-	Pane commands = new CommandsPane();
+	Pane commands; 
 
 	
-	public ModulesPane(ScrollPane scroll)
+	public ModulesPane(ScrollPane scroll, ScrollPane CommandScroll)
 	{
+		commands = new CommandsPane(CommandScroll);
 		commands.setLayoutX(commands.getLayoutX()-20);
 		commands.setLayoutY(commands.getLayoutY()-40);
 		getChildren().add(commands);
@@ -59,9 +62,9 @@ public class ModulesPane extends Pane
 	{
 		String tempName = " New Module ";
 		int count = 1;
-		for(int i = 0; i < modules.size(); i++)
+		for(int i = 0; i < getModules().size(); i++)
 		{
-			if(tempName.equals(modules.get(i).getMyButton().getText()))
+			if(tempName.equals(getModules().get(i).getMyButton().getText()))
 			{
 				count++;
 				tempName = " New Module " + count;
@@ -72,7 +75,7 @@ public class ModulesPane extends Pane
 		tempMod.getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; -fx-padding: 30;"); 
 		
 		tempMod.getMyButton().setPrefSize(300, 100);
-		modules.add(tempMod);
+		getModules().add(tempMod);
 
 		tempMod.getMyButton().setOnAction( e->{
 			
@@ -81,16 +84,18 @@ public class ModulesPane extends Pane
 				if(tempMod.isSelected())
 				{
 					((CommandsPane) commands).SelectedModule(tempMod);
+					((CommandsPane) commands).updateCommands();
+
 					
 					tempMod.getMyButton().setStyle("-fx-background-color: 'white'; -fx-text-fill: '#363636'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; -fx-padding: 30;");
-					for(int i = 0; i < modules.size(); i++)
+					for(int i = 0; i < getModules().size(); i++)
 					{
-						if(modules.get(i).equals(tempMod))
+						if(getModules().get(i).equals(tempMod))
 							continue;
 						else
 						{
-							modules.get(i).setSelected(false);
-							modules.get(i).getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; -fx-padding: 30;"); 
+							getModules().get(i).setSelected(false);
+							getModules().get(i).getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; -fx-padding: 30;"); 
 						}
 					}
 				}
@@ -107,12 +112,12 @@ public class ModulesPane extends Pane
 	
 	public void DeleteModule()
 	{
-		for(int i = 0; i < modules.size(); i++)
+		for(int i = 0; i < getModules().size(); i++)
 		{
-			if(modules.get(i).isSelected())
+			if(getModules().get(i).isSelected())
 			{
-				scrollBoi.getChildren().remove(modules.get(i).getMyButton());
-				modules.remove(i);
+				scrollBoi.getChildren().remove(getModules().get(i).getMyButton());
+				getModules().remove(i);
 				
 			}
 		}
@@ -122,6 +127,65 @@ public class ModulesPane extends Pane
 	{
 		((CommandsPane) commands).ClearPane();
 	}
+	
+	
+	public void addCommand(Module Mod)
+	{
+
+		String tempName = " New Command ";
+		int count = 1;
+		for(int i = 0; i < Mod.getMyCommands().size(); i++)
+		{
+			if(tempName.equals(Mod.getMyCommands().get(i).getMyButton().getText()))
+			{
+				count++;
+				tempName = " New Command " + count;
+			}
+		}
+		Command tempCommand = new Command(tempName); 
+		Mod.getMyCommands().add(tempCommand);
+
+		tempCommand.getMyButton().setPrefSize(348, 40);
+		tempCommand.getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black;");
+		
+		tempCommand.getMyButton().setOnAction(e->{
+			
+			tempCommand.setSelected(!tempCommand.isSelected());
+			
+			if(tempCommand.isSelected())
+			{
+//				((CommandsPane) commands).SelectedModule(tempMod);
+//				((CommandsPane) commands).updateCommands();
+				for(int i = 0; i < Mod.getMyCommands().size(); i++)
+				{
+						
+						Mod.getMyCommands().get(i).setSelected(false);
+						Mod.getMyCommands().get(i).getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; "); 
+				}
+				
+				for(int i = 0; i < Mod.getMyCommands().size(); i++)
+				{
+					System.out.println(Mod.getMyCommands().get(i).isSelected());
+				}
+				System.out.println();
+
+				tempCommand.setSelected(true);
+				tempCommand.getMyButton().setStyle("-fx-background-color: 'white'; -fx-text-fill: '#363636'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; ");
+
+			}
+			else
+			{
+				//((CommandsPane) commands).ClearPane();
+				tempCommand.getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; "); 
+			}
+		});
+		
+		
+		((CommandsPane) commands).updateCommands();
+	}
+
+	public LinkedList<Module> getModules() {return modules;}
+	public void setModules(LinkedList<Module> modules) {this.modules = modules;}
 	
 	
 	

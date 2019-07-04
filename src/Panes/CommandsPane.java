@@ -3,16 +3,27 @@ package Panes;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.control.ScrollPane;
 import Things.Module;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+
+
+
 public class CommandsPane extends Pane
 {
-	Pane scrollBoi = new Pane();
+	VBox scrollBoi = new VBox();
 	Pane currentCommand = new Pane();
 	TextField tfModuleName = new TextField();
 	
-	public CommandsPane()
+	ScrollPane scrollpane;
+	
+	Module currentmod;
+	
+	public CommandsPane(ScrollPane scroll)
 	{
+		scrollpane = scroll;
+		scrollpane.setStyle("-fx-background-color: '#242424';");
 		setLayoutX(300);
 		setLayoutY(110);
 		setStyle("-fx-background-color: '#363636'");
@@ -32,12 +43,14 @@ public class CommandsPane extends Pane
 		title1.setFill(Color.WHITE);
 		title1.setStyle("-fx-font-size: 20");
 		
-		scrollBoi.setLayoutX(25);
-		scrollBoi.setLayoutY(40+70);
-		scrollBoi.setPrefSize(350, 240);
-		getChildren().add(scrollBoi);
+		scrollpane.setLayoutX(25);
+		scrollpane.setLayoutY(40+70);
+		scrollpane.setPrefSize(350, 240);
+		getChildren().add(scrollpane);
+		scrollpane.setContent(scrollBoi);
 		scrollBoi.setStyle("-fx-background-color: '#242424';");
-		
+		scrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
 		Text title2 = new Text("Current Command");
 		title2.setLayoutX(125);
 		title2.setLayoutY(350+50);
@@ -55,6 +68,9 @@ public class CommandsPane extends Pane
 	
 	public void SelectedModule(Module mod)
 	{
+		
+		currentmod = mod;
+		
 		tfModuleName.setText(mod.getMyButton().getText());
 		
 		tfModuleName.setOnKeyPressed( e->
@@ -70,6 +86,18 @@ public class CommandsPane extends Pane
 	public void ClearPane()
 	{
 		tfModuleName.setText("");
+		scrollBoi.getChildren().clear();
+		
+	}
+	
+	public void updateCommands()
+	{
+		scrollBoi.getChildren().clear();
+
+		for(int i = 0; i < currentmod.getMyCommands().size(); i++)
+		{
+			scrollBoi.getChildren().add(currentmod.getMyCommands().get(i).getMyButton());
+		}
 	}
 
 }
