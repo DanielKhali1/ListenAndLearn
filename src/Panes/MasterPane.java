@@ -1,8 +1,14 @@
 package Panes;
 
 import javafx.scene.layout.Pane;
+
+import javafx.scene.paint.Color;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.shape.Circle;
+
+
 
 public class MasterPane extends Pane
 {
@@ -13,6 +19,7 @@ public class MasterPane extends Pane
 	Button DeleteModule = new Button("   Delete   ");
 	Button DeleteCommands = new Button("    Delete    ");
 	Button Update = new Button("  Update  ");
+	Circle needToUpdate;
 	
 	public MasterPane(ScrollPane scroll, ScrollPane commandScroll, ScrollPane keyWords, ScrollPane Responses)
 	{
@@ -31,10 +38,14 @@ public class MasterPane extends Pane
 	{
 		NewModule.setOnAction(e ->
 		{
+			needToUpdate.setVisible(true);
+
 			((ModulesPane) modules).AddModule();
 		});
 		NewCommand.setOnAction(e ->
 		{
+			needToUpdate.setVisible(true);
+
 			for(int i = 0; i < ((ModulesPane) modules).getModules().size(); i++)
 			{
 				if(((ModulesPane) modules).getModules().get(i).isSelected())
@@ -45,11 +56,15 @@ public class MasterPane extends Pane
 		});
 		DeleteModule.setOnAction(e ->
 		{
+			needToUpdate.setVisible(true);
+
 			((ModulesPane) modules).DeleteModule();
 			((ModulesPane) modules).clearCommandPane();
 		});
 		DeleteCommands.setOnAction(e ->
 		{
+			needToUpdate.setVisible(true);
+
 			for(int i = 0; i < ((ModulesPane)modules).getModules().size(); i++)
 			{
 				if(((ModulesPane) modules).getModules().get(i).isSelected())
@@ -66,12 +81,19 @@ public class MasterPane extends Pane
 		});
 		Update.setOnAction(e ->
 		{
-			
+			needToUpdate.setVisible(false);
+			try {
+				((ModulesPane) modules).saveDataToFile();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 	}
 	
 	public void setupButtons()
 	{
+
 		
 		getChildren().add(NewModule);
 		NewModule.setLayoutX(20);
@@ -145,6 +167,16 @@ public class MasterPane extends Pane
 		{
 			Update.setStyle("-fx-background-color: '#242424'; -fx-text-fill: '#c8c8c8'; -fx-font-size: 15; -fx-padding: 15;");
 		});
+		
+		needToUpdate = new Circle(5);
+		needToUpdate.setFill(Color.GREEN);
+		needToUpdate.setLayoutX(685);
+		needToUpdate.setLayoutY(48);
+		getChildren().add(needToUpdate);
+		needToUpdate.setVisible(false);
+
+		
+	
 		
 	}
 	

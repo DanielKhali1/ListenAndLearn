@@ -7,9 +7,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -293,7 +296,49 @@ public class ModulesPane extends Pane
 		}
 
 	}
-
+	public void saveDataToFile() throws Exception
+	{
+		File fout = new File("knowledge.txt");
+		
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fout)));
+		
+		for(int i = 0; i < modules.size(); i++)
+		{
+			bw.write("Mod:" + modules.get(i).getMyButton().getText()+"\n");
+			for(int j = 0; j < modules.get(i).getMyCommands().size(); j++)
+			{
+				bw.write("Command:" + modules.get(i).getMyCommands().get(j).getMyButton().getText() +"\n");
+				String Keywords = "K:";
+				for(int k = 0; k < modules.get(i).getMyCommands().get(j).getKeyWords().size(); k++)
+				{
+					Keywords += modules.get(i).getMyCommands().get(j).getKeyWords().get(k).tempTextField.getText();
+					if(k < modules.get(i).getMyCommands().get(j).getKeyWords().size())
+					{
+						Keywords += ",";
+					}
+				}
+				bw.write(Keywords+"\n");
+				String Responses = "R:";
+				for(int k = 0; k < modules.get(i).getMyCommands().get(j).getResponses().size(); k++)
+				{
+					System.out.println(modules.get(i).getMyCommands().get(j).getResponses().get(k).tempTextField.getText());
+					Responses += modules.get(i).getMyCommands().get(j).getResponses().get(k).tempTextField.getText();
+					if(k < modules.get(i).getMyCommands().get(j).getResponses().size())
+					{
+						Responses += ",";
+					}
+				}
+				bw.write(Responses+"\n");
+			}
+		}
+		bw.close();
+	
+	
+	
+	}
+	
+	
+	
 	public void setupModulesFromFile()
 	{
 		ArrayList<String> data = new ArrayList<String>();
@@ -326,31 +371,59 @@ public class ModulesPane extends Pane
 		
 		int i = 0;
 		
+		if(data.size() == 0)
+		{
+			return;
+		}
+		
 			while(data.get(i).contains("Mod"))
 			{
 
 				Module tempMod = new Module(data.get(i).substring(data.get(i).indexOf(':')+1));
-				i++;
+				if(data.size() <= i+1)
+				{
+					AddModule(tempMod);
+					break;
+				}
+				else
+				{
+					i++;
+				}
 				
 				
 				while(data.get(i).contains("Command"))
 				{
 					Command tempCommand = new Command(data.get(i).substring(data.get(i).indexOf(':')+1));
-					i++;
-					String[] splitKeywords = data.get(i).split(",");
-					for(int j = 0; j < splitKeywords.length; j++)
+					if(data.size() <= i+1)
 					{
-						KeyWords tempKeyWord = new KeyWords();
-						tempKeyWord.tempTextField.setText(splitKeywords[j]);
-						tempCommand.getKeyWords().add(tempKeyWord);
+						addCommand(tempMod, tempCommand);
+						break;
 					}
-					i++;
-					String[] splitResponses = data.get(i).split(",");
-					for(int j = 0; j < splitResponses.length; j++)
+					else
 					{
-						KeyWords tempResponse = new KeyWords();
-						tempResponse.tempTextField.setText(splitResponses[j]);
-						tempCommand.getResponses().add(tempResponse);
+						i++;
+					}
+					if(data.get(i).contains("K:"))
+					{
+						String[] splitKeywords = data.get(i).substring(2).split(",");
+						for(int j = 0; j < splitKeywords.length; j++)
+						{
+							KeyWords tempKeyWord = new KeyWords();
+							tempKeyWord.tempTextField.setText(splitKeywords[j]);
+							tempCommand.getKeyWords().add(tempKeyWord);
+						}
+						i++;
+					}
+					
+					if(data.get(i).contains("R:"))
+					{
+						String[] splitResponses = data.get(i).substring(2).split(",");
+						for(int j = 0; j < splitResponses.length; j++)
+						{
+							KeyWords tempResponse = new KeyWords();
+							tempResponse.tempTextField.setText(splitResponses[j]);
+							tempCommand.getResponses().add(tempResponse);
+						}
 					}
 					//tempMod.getMyCommands().add(tempCommand);
 					addCommand(tempMod, tempCommand);
@@ -366,9 +439,7 @@ public class ModulesPane extends Pane
 				}
 				
 				AddModule(tempMod);
-				//addModuleToThign
-				
-			
+
 			}
 			
 				

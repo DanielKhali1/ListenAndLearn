@@ -1,11 +1,2 @@
-Mod:Jokes
-Command:Farm
-keyword1,keyword2,keyword3
-response1,reponse2,response3
-Command:Yo mama
-keyword1,keyword2,keyword3
-response1,reponse2,response3
-Mod:uglyBitch
-Command:shit
-keyword1,keyword2,keyword3
-response1,reponse2,response3
+Mod:Stuff
+Mod: New Module 
