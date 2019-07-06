@@ -8,8 +8,8 @@ public class Command
 {
 	private Button myButton;
 	
-	private LinkedList<String> KeyWords = new LinkedList<String>();
-	private LinkedList<String> responses = new LinkedList<String>();
+	private LinkedList<KeyWords> KeyWords = new LinkedList<KeyWords>();
+	private LinkedList<KeyWords> responses = new LinkedList<KeyWords>();
 	private boolean isSelected = false;
 	
 	public Command(String name)
@@ -18,12 +18,12 @@ public class Command
 	}
 
 
-	public LinkedList<String> getKeyWords() {return KeyWords;}
-	public LinkedList<String> getResponses() {return responses;}
+	public LinkedList<KeyWords> getKeyWords() {return KeyWords;}
+	public LinkedList<KeyWords> getResponses() {return responses;}
 
 
-	public void setKeyWords(LinkedList<String> keyWords) {KeyWords = keyWords;}
-	public void setResponses(LinkedList<String> responses) {this.responses = responses;}
+	public void setKeyWords(LinkedList<KeyWords> keyWords) {KeyWords = keyWords;}
+	public void setResponses(LinkedList<KeyWords> responses) {this.responses = responses;}
 
 
 	public Button getMyButton() {

@@ -14,10 +14,10 @@ public class MasterPane extends Pane
 	Button DeleteCommands = new Button("    Delete    ");
 	Button Update = new Button("  Update  ");
 	
-	public MasterPane(ScrollPane scroll, ScrollPane commandScroll)
+	public MasterPane(ScrollPane scroll, ScrollPane commandScroll, ScrollPane keyWords, ScrollPane Responses)
 	{
 
-		modules = new ModulesPane(scroll, commandScroll);
+		modules = new ModulesPane(scroll, commandScroll, keyWords, Responses);
 		getChildren().add(modules);
 		setupButtons();
 		buttonClickActions();
@@ -50,7 +50,19 @@ public class MasterPane extends Pane
 		});
 		DeleteCommands.setOnAction(e ->
 		{
-					
+			for(int i = 0; i < ((ModulesPane)modules).getModules().size(); i++)
+			{
+				if(((ModulesPane) modules).getModules().get(i).isSelected())
+				{
+					for(int j = 0; j < ((ModulesPane)modules).getModules().get(i).getMyCommands().size(); j++)
+					{
+						if(((ModulesPane)modules).getModules().get(i).getMyCommands().get(j).isSelected())
+						{
+							((ModulesPane) modules).DeleteCommand(((ModulesPane)modules).getModules().get(i), ((ModulesPane)modules).getModules().get(i).getMyCommands().get(j));
+						}
+					}
+				}
+			}
 		});
 		Update.setOnAction(e ->
 		{

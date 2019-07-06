@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.ScrollPane;
+import Things.Command;
 import Things.Module;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -12,16 +13,19 @@ import javafx.scene.layout.VBox;
 
 public class CommandsPane extends Pane
 {
-	VBox scrollBoi = new VBox();
-	Pane currentCommand = new Pane();
+	public static VBox scrollBoi = new VBox();
 	TextField tfModuleName = new TextField();
 	
 	ScrollPane scrollpane;
+	public CurrentCommandPane currentCommandPane;
+	
 	
 	Module currentmod;
 	
-	public CommandsPane(ScrollPane scroll)
+	public CommandsPane(ScrollPane scroll, ScrollPane keyWords, ScrollPane Responses)
 	{
+		
+		currentCommandPane = new CurrentCommandPane(new Command(""), keyWords, Responses); 
 		scrollpane = scroll;
 		scrollpane.setStyle("-fx-background-color: '#242424';");
 		setLayoutX(300);
@@ -45,30 +49,31 @@ public class CommandsPane extends Pane
 		
 		scrollpane.setLayoutX(25);
 		scrollpane.setLayoutY(40+70);
-		scrollpane.setPrefSize(350, 240);
+		scrollpane.setPrefSize(350, 450);
 		getChildren().add(scrollpane);
 		scrollpane.setContent(scrollBoi);
 		scrollBoi.setStyle("-fx-background-color: '#242424';");
 		scrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-		Text title2 = new Text("Current Command");
-		title2.setLayoutX(125);
-		title2.setLayoutY(350+50);
-		getChildren().add(title2);
-		title2.setFill(Color.WHITE);
-		title2.setStyle("-fx-font-size: 20");
+	
+		getChildren().add(currentCommandPane);
 		
-		currentCommand.setLayoutX(25);
-		currentCommand.setLayoutY(360+50);
-		currentCommand.setPrefSize(350, 150);
-
-		getChildren().add(currentCommand);	
-		currentCommand.setStyle("-fx-background-color: '#242424';");		
 	}
+	
+	public void SelectedCommand(Command com)
+	{
+		currentCommandPane.setMycommand(com);
+	}
+	
+	public void updateCommandContents()
+	{
+		currentCommandPane.update();
+	}
+	
+	
+	
 	
 	public void SelectedModule(Module mod)
 	{
-		
 		currentmod = mod;
 		
 		tfModuleName.setText(mod.getMyButton().getText());
@@ -81,6 +86,42 @@ public class CommandsPane extends Pane
 		{
 			mod.getMyButton().setText(tfModuleName.getText());
 		});
+		
+		for(int i = 0; i < mod.getMyCommands().size(); i++)
+		{
+			mod.getMyCommands().get(i).setSelected(false);
+			updateCommands();
+		}
+		
+		for(Command tempCommand : mod.getMyCommands())
+		{
+			if(tempCommand.isSelected())
+			{
+				SelectedCommand(tempCommand);
+				updateCommandContents();
+				for(int i = 0; i < mod.getMyCommands().size(); i++)
+				{
+						
+					mod.getMyCommands().get(i).setSelected(false);
+					mod.getMyCommands().get(i).getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; "); 
+				}
+				
+				for(int i = 0; i < mod.getMyCommands().size(); i++)
+				{
+				}
+	
+				tempCommand.setSelected(true);
+				tempCommand.getMyButton().setStyle("-fx-background-color: 'white'; -fx-text-fill: '#363636'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; ");
+	
+			}
+			else
+			{
+				currentCommandPane.clear();
+				tempCommand.getMyButton().setStyle("-fx-background-color: '#363636'; -fx-text-fill: 'white'; -fx-border-width: 2; -fx-font-size: 19.5; -fx-border-color: black; "); 
+			}
+		}
+		
+		currentCommandPane.clear();
 	}
 	
 	public void ClearPane()
