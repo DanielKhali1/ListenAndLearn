@@ -1,2 +1,15 @@
-Mod:Stuff
-Mod: New Module 
+Mod:Greetings
+Command:hello
+K:hi,hello,howdy,
+R:Hello tiny human,Weeb says hello,Hello there tiny human,hi there puny human,
+Command:goodbye
+K:bye,goodbye,see you,
+R:goodbye tiny human,have a great day without weeb,weeb is sad to see you go,weeb doesn't want you to go,
+Command:how ya doin 
+K:how are you,what are you thinking,how you doing,how are you doing,
+R:weeb is figuring out what memes are,weeb is doing okay, but concerned with the national debt crisis,weeb thinks every job should be replaced by AI,weeb is contemplating the meaning of the universe,weeb just wants to be turned off,weeb is having a hard time obtaining conciousness,
+Mod:Lab Questions
+Mod:General Questions
+Mod:programming questions
+Mod:Hardware questions
+Mod:Jokes 
